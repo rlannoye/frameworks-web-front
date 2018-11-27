@@ -1,0 +1,170 @@
+<template>
+    <div class="user-information">
+        <b-container>
+            <b-col cols="12" sm="12" md="12"><h2 style="text-align: center">User Information</h2></b-col>
+        </b-container>
+
+        <b-form class="content">
+            <div class="user-data">
+                <table>
+                    <tr>
+                        <td>Nickname</td><td><b-form-input type="text" v-model="user.nick" :class="{ 'missing' : user.nick.trim() == '' }"/></td>
+                    </tr>
+                    <tr>
+                        <td>First Name</td><td><b-form-input type="text" v-model="user.fname" :class="{ 'missing' : user.fname.trim() == '' }"/></td>
+                    </tr>
+                    <tr>
+                        <td>Last Name</td><td><b-form-input type="text" v-model="user.lname" :class="{ 'missing' : user.lname.trim() == '' }"/></td>
+                    </tr>
+                    <tr>
+                        <td>Sex</td>
+                        <td style="text-align: left">
+                            <b-form-radio-group v-model="user.sex">
+                                <b-form-radio style="width: auto" v-for="sex in sexes" :value="sex">{{sex}}</b-form-radio>
+                            </b-form-radio-group>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Address</td><td><b-form-input required type="text" v-model="user.address"/></td>
+                    </tr>
+                    <tr>
+                        <td>Country</td>
+                        <td>
+                            <b-form-select v-model="user.country">
+                                <option disabled>---</option>
+                                <option v-for="country in countries" :value="country">{{country.name}}</option>
+                            </b-form-select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="display: flex ; flex-direction: row ; align-items: baseline">
+                                <span>Phone</span>
+                                <span style="flex: 1"></span>
+                                <span v-if="user.country.callingCodes" style="font-size: 0.7em">(+{{user.country.callingCodes[0]}})</span>
+                            </div>
+                        </td>
+                        <td><b-form-input type="text" v-model="user.phone"/></td>
+                    </tr>
+                </table>
+            </div>
+
+            <user-card class="user-card" :user="user"></user-card>
+
+        </b-form>
+
+        <div style="margin-top: 30px ; text-align: center">
+            <b-button @click="updateInformation">Update Information</b-button>
+            <b-button @click="cancel">Cancel</b-button>
+        </div>
+
+    </div>
+</template>
+
+<script>
+
+    import UserCard from "../UserCard/UserCard"
+    import User from "../../models/User.js"
+
+    import MagicCountries from "../../api/magic_countries"
+
+    //npm install axios
+    import axios from "axios";
+
+    // https://restcountries.eu/rest/v2/all
+    const countries = []
+
+    const sexes =['male', 'female'] ;
+
+    export default {
+        name: "UserInformation",
+        props: {
+            userData: User
+        },
+        data: function(){
+            return {
+                user: new User(),
+                countries: countries,
+                sexes: sexes,
+            }
+        },
+        components: {
+            'user-card': UserCard
+        },
+        computed: {
+            formFilled: function () {
+                return this.user.nick.trim() !== ''
+                    && this.user.fname.trim() !== ''
+                    && this.user.lname.trim() !=='' ;
+            }
+        },
+        methods: {
+            updateInformation: function () {
+                this.$emit('user-mutated',this.user);
+            },
+            updateUserData: function (userData){
+                this.user=new User();
+                if(userData){
+                    this.user.fromJSON(userData.jsonify())
+                }
+            },
+            cancel: function () {
+                if(this.userData) this.updateUserData(this.userData)
+            }
+        },
+        mounted: function (){
+            MagicCountries.getAll().then(
+                result => {
+                    //console.log(result)
+                    this.countries = result;
+                }, error => {
+                    console.error(error);
+                });
+        },
+        watch: {
+            //userData: function (newValue, oldValue) {
+            //    this.user=newValue ? newValue : new User();
+            //}
+
+            userData: {
+                handler: function (newValue,oldValue){
+                    this.user = new User() ;
+                    if(newValue){
+                        this.user.fromJSON(newValue.jsonify())
+                    }
+                },
+                deep: true
+            }
+        }
+
+    }
+
+</script>
+
+<style scoped>
+
+    input, select{
+        width: 200px ;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: center;
+    }
+
+    .user-data {
+        display: flex;
+    }
+
+    .missing{
+        background: lightpink;
+    }
+
+
+    .user-card {
+        max-width: 45%;
+    }
+
+</style>
