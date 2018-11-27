@@ -1,8 +1,15 @@
 import Vue from 'vue'
-import App from './App.vue'
+import App from './App'
 
 Vue.config.productionTip = false
 
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+// nmp install bootstrap-vue
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+Vue.use(BootstrapVue)
+
+const appli = new Vue({
+    render: h => h(App)
+}) ;
+appli.$mount('#app')

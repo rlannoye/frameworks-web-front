@@ -1,13 +1,87 @@
 <template>
-    $END$
+    <div class="user-card">
+        <b-form class="content">
+            <div style="display: flex ; flex-direction: row ; align-items: center">
+                <div>
+                    <b-img :src="require('../../assets/face.png')"/>
+                </div>
+                <div style="flex: 1"></div>
+                <div class="info">
+                    <span class="pseudo">{{ user.nick }}</span>
+                    <span>{{ this.genders[user.sex] }} {{ fullName }}</span>
+                </div>
+            </div>
+            <div class="details">
+                <div>{{ user.address }} <span v-if="user.country.name">{{ user.country.name }}</span></div>
+                <div v-if="user.phone">{{ fullPhone }}</div>
+            </div>
+        </b-form>
+    </div>
 </template>
 
 <script>
+
+    import User from "../../models/User.js"
+
+    function capitalize(value){
+        if (!value) return ''
+        value = value.toString().trim()
+        return value.charAt(0).toUpperCase() + value.slice(1) ;
+    }
+
+    const genders = {
+        'male': "Mr",
+        'female': "Mrs"
+    }
+
     export default {
-        name: "UserCard"
+        name: "UserCard",
+        props: {
+            user: User
+        },
+        data: function(){
+            return {
+                genders: genders
+            }
+        },
+        computed: {
+            fullName : function () {
+                return capitalize(this.user.fname) + " " + capitalize(this.user.lname)
+            },
+            fullPhone: function () {
+                return this.user.country.callingCodes
+                    ? "(+ " + this.user.country.callingCodes[0] + " ) " + this.user.phone
+                    : this.user.phone ;
+            },
+        },
+        filters: {
+            capitalize: capitalize
+        },
     }
 </script>
 
 <style scoped>
+    .user-card {
+        min-width: 200px;
+        border: 1px solid lightgray;
+        background: white;
+        padding: 5px;
+        text-align: center;
+    }
 
+    .info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        font-size: 0.9em;
+    }
+
+    .pseudo {
+        font-weight: bold;
+    }
+
+    .details {
+        margin: 3px 10px;
+        font-size: 0.8em;
+    }
 </style>
