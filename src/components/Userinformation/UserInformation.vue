@@ -54,7 +54,7 @@
         </b-form>
 
         <div style="margin-top: 30px ; text-align: center">
-            <b-button @click="updateInformation">Update Information</b-button>
+            <b-button @click="updateInformation" variant="primary">Update Information</b-button>
             <b-button @click="cancel">Cancel</b-button>
         </div>
 
@@ -168,3 +168,5 @@
     }
 
 </style>
+
+

@@ -15,11 +15,13 @@
 
     export default {
         name: "MagicLogger",
+        props: {
+            user: User
+        },
         data: function(){
             return {
                 login: '',
                 password: '',
-                user:undefined,
                 connected: false
             }
         },
@@ -30,15 +32,14 @@
         },
         methods: {
             connect: function (event) {
-                this.user= new User();
+                let newuser= new User();
                 this.user.nick = this.login;
                 this.connected= true;
-                this.$emit('user-logged-in', this.user);
+                this.$emit('user-logged-in', this.newuser);
             },
             disconnect: function(){
                 this.connected=false;
                 this.$emit('user-logged-out', this.user);
-                this.user = undefined;
             }
         }
     }
