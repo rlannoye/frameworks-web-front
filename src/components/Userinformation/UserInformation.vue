@@ -1,10 +1,10 @@
 <template>
     <div class="user-information">
-        <b-container>
-            <b-col cols="12" sm="12" md="12"><h2 style="text-align: center">User Information</h2></b-col>
-        </b-container>
+
+        <h2 style="text-align: center">User Information</h2>
 
         <b-form class="content">
+
             <div class="user-data">
                 <table>
                     <tr>
@@ -27,7 +27,7 @@
                     <tr>
                         <td>Address</td><td><b-form-input required type="text" v-model="user.address"/></td>
                     </tr>
-                    <tr>
+                    <tr v-if="countries.length !== 0">
                         <td>Country</td>
                         <td>
                             <b-form-select v-model="user.country">
@@ -54,8 +54,11 @@
         </b-form>
 
         <div style="margin-top: 30px ; text-align: center">
-            <b-button @click="updateInformation" variant="primary">Update Information</b-button>
-            <b-button @click="cancel">Cancel</b-button>
+            <div>
+                <b-button @click="updateInformation" variant="primary" :disabled="!formFilled">Update Information</b-button> &nbsp;
+                <b-button @click="cancel">Cancel</b-button>
+            </div>
+            <span v-show="!formFilled" style="color: red">Please fill in all required fields</span>
         </div>
 
     </div>
@@ -68,10 +71,6 @@
 
     import MagicCountries from "../../api/magic_countries"
 
-    //npm install axios
-    import axios from "axios";
-
-    // https://restcountries.eu/rest/v2/all
     const countries = []
 
     const sexes =['male', 'female'] ;
@@ -100,10 +99,13 @@
         },
         methods: {
             updateInformation: function () {
-                this.$emit('user-mutated',this.user);
+
+                // On imagine lancer la requete sur le serveur...
+                this.$emit('user-mutated', this.user) ;
+
             },
-            updateUserData: function (userData){
-                this.user=new User();
+            updateUserData: function (userData) {
+                this.user = new User() ;
                 if(userData){
                     this.user.fromJSON(userData.jsonify())
                 }
@@ -112,31 +114,27 @@
                 if(this.userData) this.updateUserData(this.userData)
             }
         },
-        mounted: function (){
+        mounted: function () {
+
             MagicCountries.getAll().then(
                 result => {
-                    //console.log(result)
-                    this.countries = result;
-                }, error => {
-                    console.error(error);
-                });
+                    this.countries = result ;
+                },
+                error => {
+                    console.log(error)
+                }
+            )
+
+            this.updateUserData(this.userData) ;
         },
         watch: {
-            //userData: function (newValue, oldValue) {
-            //    this.user=newValue ? newValue : new User();
-            //}
-
             userData: {
-                handler: function (newValue,oldValue){
-                    this.user = new User() ;
-                    if(newValue){
-                        this.user.fromJSON(newValue.jsonify())
-                    }
+                handler: function (newValue, oldValue) {
+                    this.updateUserData(newValue) ;
                 },
                 deep: true
             }
         }
-
     }
 
 </script>
@@ -161,7 +159,6 @@
     .missing{
         background: lightpink;
     }
-
 
     .user-card {
         max-width: 45%;
