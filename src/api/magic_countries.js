@@ -1,22 +1,24 @@
+// npm install axios
 import axios from 'axios'
 
 export default class MagicCountries {}
 
-MagicCountries.countries=undefined;
+MagicCountries.countries = undefined ;
 
 MagicCountries.getAll = function(){
-    return new Promise((resolve, reject) => {
+
+    return new Promise((resolve, reject) =>{
         if(MagicCountries.countries){
-            resolve(MagicCountries.countries);
+            resolve(MagicCountries.countries) ;
         }else{
             axios({method: "GET", "url": "https://restcountries.eu/rest/v2/all"}).then(
                 result => {
-                    MagicCountries.countries=result.data;
+                    MagicCountries.countries = result.data ;
                     resolve(MagicCountries.countries)
                 }, error => {
-                    console.error(error);
                     reject(error)
                 });
         }
     })
+
 }

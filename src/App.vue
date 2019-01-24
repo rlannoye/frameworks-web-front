@@ -19,7 +19,7 @@
 </template>
 
 <script>
-    import MagicLogger from "./components/MagicLogger"
+    import MagicLogger from "./components/MagicLogger/MagicLogger"
     import UserInformation from "./components/Userinformation/UserInformation"
     import User from "./models/User.js"
 

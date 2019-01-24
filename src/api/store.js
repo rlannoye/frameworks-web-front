@@ -1,5 +1,6 @@
 import User from "../models/User"
 
+// npm install vuex
 import Vue from "vue"
 import Vuex from "vuex"
 Vue.use(Vuex)

@@ -33,7 +33,7 @@
     import User from "../models/User"
     import AppStore from "../api/store"
 
-    const MAGIC_WORD = "remy"
+    const MAGIC_WORD = "magic"
 
     export default {
         name: "ContentLogger",
@@ -55,8 +55,9 @@
         methods: {
             connect: function () {
                 if(this.password === MAGIC_WORD){
+                    console.log("connecte")
                     this.error = ""
-                    // On imagine rÃ©cupÃ©rer les donnÃ©es de l'utilisateur sur le serveur...
+                    // On imagine récupérer les données de l'utilisateur sur le serveur...
                     let newuser = new User() ;
                     newuser.nick = this.login ;
                     this.connected = true ;

@@ -11,7 +11,7 @@
 
 <script>
 
-    import User from "../models/User.js"
+    import User from "../../models/User.js"
 
     export default {
         name: "MagicLogger",
@@ -32,7 +32,7 @@
         },
         methods: {
             connect: function (event) {
-                // On imagine rÃ©cupÃ©rer les donnÃ©es de l'utilisateur sur le serveur...
+                // On imagine récupérer les données de l'utilisateur sur le serveur...
                 let newuser = new User() ;
                 newuser.nick = this.login ;
                 this.connected = true ;

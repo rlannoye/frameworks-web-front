@@ -1,21 +1,19 @@
 <template>
     <div class="user-card">
-        <b-form class="content">
-            <div style="display: flex ; flex-direction: row ; align-items: center">
-                <div>
-                    <b-img :src="require('../../assets/face.png')"/>
-                </div>
-                <div style="flex: 1"></div>
-                <div class="info">
-                    <span class="pseudo">{{ user.nick }}</span>
-                    <span>{{ this.genders[user.sex] }} {{ fullName }}</span>
-                </div>
+        <div style="display: flex ; flex-direction: row ; align-items: center">
+            <div>
+                <img :src="require('../../assets/face.png')"/>
             </div>
-            <div class="details">
-                <div>{{ user.address }} <span v-if="user.country.name">{{ user.country.name }}</span></div>
-                <div v-if="user.phone">{{ fullPhone }}</div>
+            <div style="flex: 1"></div>
+            <div class="info">
+                <span class="pseudo">{{ user.nick }}</span>
+                <span>{{ this.genders[user.sex] }} {{ fullName }}</span>
             </div>
-        </b-form>
+        </div>
+        <div class="details">
+            <div>{{ user.address }} <span v-if="user.country.name">{{ user.country.name }}</span></div>
+            <div v-if="user.phone">{{ fullPhone }}</div>
+        </div>
     </div>
 </template>
 

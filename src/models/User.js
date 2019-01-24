@@ -1,5 +1,5 @@
 export default class User {
-    constructor(){
+    constructor() {
         this.nick = ''
         this.fname = ''
         this.lname = ''
@@ -7,6 +7,7 @@ export default class User {
         this.address = ''
         this.country = {}
         this.phone = ''
+        this.cards = []
     }
 
     jsonify(){
@@ -22,6 +23,7 @@ export default class User {
         this.address = object.address ;
         this.country = object.country ;
         this.phone = object.phone ;
+        this.cards = object.cards ;
     }
 
 }

@@ -81,6 +81,7 @@
             userData: User
         },
         data: function(){
+            console.log("data")
             return {
                 user: new User(),
                 countries: countries,
@@ -149,10 +150,10 @@
         display: flex;
         flex-direction: row;
         align-items: flex-start;
-        justify-content: center;
     }
 
     .user-data {
+        flex: 1;
         display: flex;
     }
 
@@ -165,5 +166,3 @@
     }
 
 </style>
-
-
